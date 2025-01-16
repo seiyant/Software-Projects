@@ -28,7 +28,6 @@ def init() -> None:  # Use as is
 
     print(); print("Welcome! Let's play the 2048 game."); print()
 
-
 def displayGame() -> None:  # Use as is
     """ displays the current board on the console """
     print("+-----+-----+-----+-----+")
@@ -38,7 +37,6 @@ def displayGame() -> None:  # Use as is
             print(f"|{str(cell).center(5)}", end="")
         print("|")
         print("+-----+-----+-----+-----+")
-
 
 def promptGamerForTheNextMove() -> str: # Use as is
     """
@@ -58,23 +56,38 @@ def addANewTwoToBoard() -> None:
     """ 
         adds a new 2 at an available randomly-selected cell of the board
     """
-    pass #to implement
+    empty_cells = []
+    for row in range(4):
+        for column in range(4):
+            if board[row][column] == '':
+                empty_cells.append((row, column)) #check empty cells
 
+    if not empty_cells:
+        return
+    
+    add_cell = random.choice(empty_cells)
+    board[add_cell[0]][add_cell[1]] = 2
 
 def isFull() -> bool:
     """ 
         returns True if no empty cell is left, False otherwise 
     """
-    pass #to implement
-
+    for row in board:
+        if '' in row:
+            return False
+    return True
 
 def getCurrentScore() -> int:
     """ 
         calculates and returns the current score
         the score is the sum of all the numbers currently on the board
     """
-    pass #to implement
-
+    sum = 0
+    for row in board:
+        for cell in row:
+            if isinstance(cell, int): #checks if cell is an int
+                sum += cell
+    return sum
 
 def updateTheBoardBasedOnTheUserMove(move: str) -> None:
     """
@@ -82,12 +95,81 @@ def updateTheBoardBasedOnTheUserMove(move: str) -> None:
         the move argument is either 'W', 'A', 'S', or 'D'
         directions: W for up; A for left; S for down, and D for right
     """
-    pass #to implement
+    global board #issue with local variable
+
+    if move == 'A': #left
+        new_board = []
+        for row in board:
+            new_row = cellSlideLeft(row)
+            new_board.append(new_row)
+        board = new_board 
+
+    elif move == 'D': #right
+        new_board = []
+        for row in board:
+            new_row = cellSlideLeft(row[::-1]) #reverse order
+            new_board.append(new_row[::-1])
+        board = new_board 
+
+    elif move == 'W': #up
+        # Apply transpose to use columns as rows
+        transposed_board = []
+        for column in zip(*board): #pairs rows as columns
+            transposed_board.append(list(column))
+        
+        new_board = []
+        for row in transposed_board:
+            new_row = cellSlideLeft(row)
+            new_board.append(new_row)
+        
+        board = []
+        for column in zip(*new_board): #transpose board back
+            board.append(list(column))
+
+    elif move == 'S': #down
+        # Apply transpose to use columns as rows
+        transposed_board = []
+        for column in zip(*board): #pairs rows as columns
+            transposed_board.append(list(column))
+        
+        new_board = []
+        for row in transposed_board:
+            new_row = cellSlideLeft(row[::-1]) #reverse order
+            new_board.append(new_row[::-1])
+        
+        board = []
+        for column in zip(*new_board): #transpose board back
+            board.append(list(column))
 
 #up to two new functions allowed to be added (if needed)
 #as usual, they must be documented well
 #they have to be placed below this line
 
+def cellSlideLeft(row: list[int]) -> list[int]:
+    """
+        slides numbers left and merges adjacent same numbers per row
+        returns updated row
+    """
+    compact = []
+    for cell in row:
+        if cell != '':
+            compact.append(cell) #remove empty cells and compact row
+    skip_merge = False #to not merge same cells twice
+
+    for i in range(len(compact) - 1):
+        if skip_merge:
+            skip_merge = False
+        if compact[i] == compact[i+1]:
+            compact[i] *= 2 #double value of merged cell
+            compact[i+1] = ''
+            skip_merge = True
+    
+    new_compact = []
+    for cell in compact:
+        if cell != '':
+            new_compact.append(cell)
+    compact = new_compact #slide after merge
+    return compact + [''] * (len(row) - len(compact)) #rest of cells get empty
 
 if __name__ == "__main__":  # Use as is  
     init()
