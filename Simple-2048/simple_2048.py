@@ -28,6 +28,7 @@ def init() -> None:  # Use as is
 
     print(); print("Welcome! Let's play the 2048 game."); print()
 
+
 def displayGame() -> None:  # Use as is
     """ displays the current board on the console """
     print("+-----+-----+-----+-----+")
@@ -37,6 +38,7 @@ def displayGame() -> None:  # Use as is
             print(f"|{str(cell).center(5)}", end="")
         print("|")
         print("+-----+-----+-----+-----+")
+
 
 def promptGamerForTheNextMove() -> str: # Use as is
     """
@@ -51,6 +53,7 @@ def promptGamerForTheNextMove() -> str: # Use as is
             break
         print('Enter one of "W", "A", "S", "D", or "Q"') # otherwise inform the user about valid input
     return move
+
 
 def addANewTwoToBoard() -> None:
     """ 
