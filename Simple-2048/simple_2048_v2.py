@@ -4,8 +4,11 @@
 # A command-line 2048 game
 
 import random
+import copy
 
 board: list[list] = []  # a 2-D list to keep the current status of the game board
+history: list[list[list[int]]] = [] #stack of board history
+MAX_HISTORY = 3
 
 def init() -> None:  # Use as is
     """ 
@@ -45,13 +48,15 @@ def promptGamerForTheNextMove() -> str: # Use as is
         prompts the gamer until a valid next move or Q (to quit) is selected
         (valid move direction: one of 'W', 'A', 'S' or 'D')
         returns the user input
+        
+        EXTRA FEATURE: U (to undo) MAX_HISTORY times only if game is not over
     """
-    print("Enter one of WASD (move direction) or Q (to quit)")
+    print("Enter one of WASD (move Up, Left, Down, Right), U (to undo), or Q (to quit)")
     while True:  # prompt until a valid input is entered
         move = input('> ').upper()
-        if move in ('W', 'A', 'S', 'D', 'Q'): # a valid move direction or 'Q'
+        if move in ('W', 'A', 'S', 'D', 'U', 'Q'): # a valid move direction or 'U' or 'Q'
             break
-        print('Enter one of "W", "A", "S", "D", or "Q"') # otherwise inform the user about valid input
+        print('Enter one of "W", "A", "S", "D", "U", or "Q"') # otherwise inform the user about valid input
     return move
 
 
@@ -211,7 +216,6 @@ def movePossible(move: str) -> bool:
     checks if move changes board
     returns True if the move is possible, changing board, False otherwise.
     """
-    import copy
     board_copy = copy.deepcopy(board) #copy board fully
     
     if move == 'A': #left
@@ -270,32 +274,47 @@ if __name__ == "__main__":  # Use as is
         if(userInput == 'Q'):
             print("Exiting the game. Thanks for playing!")
             break
-
-        full_board = True #isFull-ish loop to enable input-based game over
-        for row in board:
-            for cell in row:
-                if cell == '':
-                    full_board = False
-                    break
-            if not full_board:
-                break
         
-        if full_board:
-            if movePossible(userInput):
+        if userInput == 'U':
+            if history:
+                board = history.pop #revert to previous board
+                print("Undo previous move.")
+                displayGame()
+            else:
+                print("Invalid input.")
+            continue #re-prompt user
+        else:
+            copy_board = copy.deepcopy(board)
+            history.append(copy_board)
+
+            if len(history) > MAX_HISTORY: #maximum 3 undos
+                history.pop(0) #removes oldest history
+
+            full_board = True #isFull-ish loop to enable input-based game over
+            for row in board:
+                for cell in row:
+                    if cell == '':
+                        full_board = False
+                        break
+                if not full_board:
+                    break
+            
+            if full_board:
+                if movePossible(userInput):
+                    updateTheBoardBasedOnTheUserMove(userInput)
+                    addANew2Or4ToBoard()
+                    displayGame()
+                else: #invalid move and end game
+                    print("Invalid move")
+                    print("Game is Over. Check out your score.")
+                    print("Thanks for playing!")
+                    break
+            else: #board is not full yet, as normal
                 updateTheBoardBasedOnTheUserMove(userInput)
                 addANew2Or4ToBoard()
                 displayGame()
-            else: #invalid move and end game
-                print("Invalid move")
+
+            if isFullAndNoValidMove(): #game is over once all moves are not possible
                 print("Game is Over. Check out your score.")
                 print("Thanks for playing!")
                 break
-        else: #board is not full yet, as normal
-            updateTheBoardBasedOnTheUserMove(userInput)
-            addANew2Or4ToBoard()
-            displayGame()
-
-        if isFullAndNoValidMove(): #game is over once all moves are not possible
-            print("Game is Over. Check out your score.")
-            print("Thanks for playing!")
-            break
