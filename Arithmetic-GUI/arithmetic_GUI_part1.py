@@ -97,6 +97,8 @@ class Rational:
             return "NaN" #check if denominator entry is 0
         if self.denominator == 1:
             return str(self.numerator) #check if output is integer
+        if self.numerator == 0:
+            return 0
         
         return f"{self.numerator}/{self.denominator}"
 
