@@ -67,15 +67,15 @@ class Complex:
         if divisor == 0: #divide by 0 error
             return Complex(float('nan'), float('nan'))
         
-        if ((self.real * secondComplex.real + self.imaginary * secondComplex.imaginary) / divisor).is_integer: #avoid unneccessary decimals (1.0 -> 1)
-            re = int((self.real * secondComplex.real + self.imaginary * secondComplex.imaginary) / divisor)
-        else: 
-            re = (self.real * secondComplex.real + self.imaginary * secondComplex.imaginary) / divisor
+        def intefy(value): #makes a.0 -> a
+            if value.is_integer():
+                return int(value)
+            else:
+                return value
+
+        re = intefy((self.real * secondComplex.real + self.imaginary * secondComplex.imaginary) / divisor)
         
-        if ((self.imaginary * secondComplex.real + self.real * secondComplex.imaginary) / divisor).is_integer:
-            im = int((self.imaginary * secondComplex.real + self.real * secondComplex.imaginary) / divisor)
-        else: 
-            im = (self.imaginary * secondComplex.real + self.real * secondComplex.imaginary) / divisor
+        im = intefy((self.imaginary * secondComplex.real + self.real * secondComplex.imaginary) / divisor)
 
         return Complex(re, im)
 
