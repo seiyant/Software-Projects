@@ -131,7 +131,10 @@ if __name__ == "__main__":
         process.append(p)
 
     for p in process:
-        p.start()
+        p.start() #starts all processes without waiting for each one to finish (parallel)
     
     for p in process:
-        p.join()
+        p.join() #blocks execution until process finishes
+
+    #Why does p in process: p.start(); p.join() not work?
+    #Makes program run one process at a time instead of at once (not multiprocessing)
