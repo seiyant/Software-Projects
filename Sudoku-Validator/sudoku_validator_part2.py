@@ -1,5 +1,6 @@
 # student name:   Seiya Nozawa-Temchenko
 # student number: 34838482
+
 import multiprocessing as mp
 
 def checkColumn(puzzle: list, column: int):
