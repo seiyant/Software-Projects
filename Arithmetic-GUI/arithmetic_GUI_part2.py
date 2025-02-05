@@ -1,4 +1,3 @@
-#Lab 2 (part 2)
 # student name:   Seiya Nozawa-Temchenko
 # student number: 34838482
 
