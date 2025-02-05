@@ -1,7 +1,5 @@
 ---
 
-## Overview
-
 This repository contains several projects that demonstrate various aspects of Python programming, including:
 - **Simple 2048** features a command-line 2048 game with an undo feature.
 - **Arithmetic GUI** features a simple calculator GUI (using Tkinter) for arithmetic operations on rational and complex numbers.
