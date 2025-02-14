@@ -57,7 +57,7 @@ def producer() -> None:
             buffer.insert(item) #store item in buffer
         full.release() #signal slot is empty, increment full
 
-        #Note: semaphore is a sync tool using a counter for access to shared resources from multiple threads
+        #Note: semaphore is a sync tool using a counter for access to shared resources from multiple threads (operations: acquire=wait, release=signal)
 
 
 def consumer() -> None:
