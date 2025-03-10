@@ -5,7 +5,7 @@ import multiprocessing
 import random #is used to cause some randomness 
 import time   #is used to cause some delay to simulate thinking or eating times
 
-def philosopher(id: int, chopstick: list, seats: multiprocessing.Semaphore): 
+def philosopher(id: int, chopstick: list, seats: multiprocessing.Semaphore): #add arg for table seats
     """
        implements a thinking-eating philosopher
        id is used to identifier philosopher #id (id is between 0 to numberOfPhilosophers-1)
@@ -43,7 +43,7 @@ def philosopher(id: int, chopstick: list, seats: multiprocessing.Semaphore):
 if __name__ == "__main__":
     semaphoreList = list()          #this list will hold one semaphore per chopstick
     numberOfPhilosophers = 5
-    seats = multiprocessing.Semaphore(4)
+    seats = multiprocessing.Semaphore(4) #set philosopher seat limit
 
     for i in range(numberOfPhilosophers):             
         semaphoreList.append(multiprocessing.Semaphore(1))    #one semaphore per chopstick

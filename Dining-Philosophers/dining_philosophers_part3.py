@@ -29,7 +29,7 @@ def philosopher(id: int, chopstick: list):
             print(f"DEBUG: philosopher{id} has chopstick{rightChopstick}")
             chopstick[leftChopstick].acquire()
             print(f"DEBUG: philosopher{id} has chopstick{leftChopstick}")
-        else: 
+        else: #odd philosopher grab as normal
             chopstick[leftChopstick].acquire()
             print(f"DEBUG: philosopher{id} has chopstick{leftChopstick}")
             chopstick[rightChopstick].acquire()

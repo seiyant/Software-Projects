@@ -31,7 +31,7 @@ def philosopher(id: int, chopstick: list):
                     print(f"DEBUG: philosopher{id} has chopstick{rightChopstick}")
                     break
                 else: 
-                    chopstick[leftChopstick].release()
+                    chopstick[leftChopstick].release() #release if unavailable
 
         eatForAWhile()  #use this line as is
 
